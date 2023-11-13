@@ -1,34 +1,35 @@
 name: Deployment
 on: push
 jobs:
-  setup:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Get code from repository
         uses: actions/checkout@v4
       - name: Install dependencies
         run: npm ci
-  lint:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
       - name: Running lint script
         run: npm run lint
   test:
-    needs: setup
     runs-on: ubuntu-latest
     steps:
+      - name: Get code from repository
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm ci
       - name: Running test script
         run: npm run test
   build:
-    needs: setup
     runs-on: ubuntu-latest
     steps:
+      - name: Get code from repository
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm ci
       - name: Running build script
         run: npm run build
   deploy: 
-    needs: [lint,test,build]
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy
+      - name: Deploy application
         run: echo "Deploying..."
